@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive E-Learning Code Structure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A responsive two-panel layout is used. The left panel contains an interactive, collapsible file tree, serving as the primary navigation. The right panel displays detailed content about the selected file/folder. This structure was chosen because it directly mimics the familiar and intuitive interface of a code editor's file explorer, which is the most effective way to explore a hierarchical file structure. It allows users to self-pace their exploration without being overwhelmed, clicking to reveal details on demand. On mobile, the layout stacks vertically for usability. -->
+    <!-- Visualization & Content Choices: The primary 'visualization' is the interactive file tree itself, built with HTML/CSS/JS. Goal: Organize/Navigate. Method: Styled UL/LI elements with JS click handlers for expansion and content loading. Justification: This is the most direct and universally understood method for representing hierarchical data like a file system. The right panel uses simple text blocks. Goal: Inform. Method: A div whose content is dynamically updated with JS. Justification: Simple text is clearest for explaining technical concepts. No quantitative data exists in the source, so standard charts (Chart.js) are not applicable or implemented, though the library is included per instructions. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .file-tree-item {
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .file-tree-item:hover {
+            background-color: #EAE6E1;
+        }
+        .file-tree-item.active {
+            background-color: #DCD6CF;
+            font-weight: 600;
+        }
+        .folder > .file-tree-item::before {
+            content: '📁';
+            margin-right: 8px;
+        }
+        .file > .file-tree-item::before {
+            content: '📄';
+            margin-right: 8px;
+        }
+        .folder > .file-tree-item.expanded::before {
+            content: '📂';
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Left Panel: File Tree -->
+        <aside class="w-full md:w-1/3 lg:w-1/4 xl:w-1/5 bg-[#F4F1ED] p-4 md:p-6 border-r border-gray-200/80 overflow-y-auto">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Project Structure</h2>
+            <nav id="fileTree" class="text-sm">
+                <ul>
+                    <li class="folder">
+                        <div class="file-tree-item" data-target="root">e-learning-website/</div>
+                        <ul class="pl-4">
+                            <li class="file"><div class="file-tree-item" data-target="index-html">index.html</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="vite-config">vite.config.js</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="package-json">package.json</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="package-lock-json">package-lock.json</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="README-md">README.md</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="env">.env</div></li>
+                            <li class="file"><div class="file-tree-item" data-target="gitignore">.gitignore</div></li>
+                            <li class="folder">
+                                <div class="file-tree-item" data-target="src">src/</div>
+                                <ul class="pl-4 hidden">
+                                    <li class="file"><div class="file-tree-item" data-target="main-jsx">main.jsx</div></li>
+                                    <li class="file"><div class="file-tree-item" data-target="app-jsx">App.jsx</div></li>
+                                    <li class="folder"><div class="file-tree-item" data-target="assets">assets/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="folder"><div class="file-tree-item" data-target="images">images/</div>
+                                                <ul class="pl-4 hidden">
+                                                </ul>
+                                            </li>
+                                            <li class="folder"><div class="file-tree-item" data-target="videos">videos/</div>
+                                                <ul class="pl-4 hidden">
+                                                </ul>
+                                            </li>
+                                            <li class="folder"><div class="file-tree-item" data-target="fonts">fonts/</div>
+                                                <ul class="pl-4 hidden">
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="components">components/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="folder"><div class="file-tree-item" data-target="header">Header/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="footer">Footer/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="coursecard">CourseCard/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="button">Button/</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="pages">pages/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="folder"><div class="file-tree-item" data-target="homepage">HomePage/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="coursespage">CoursesPage/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="coursedetailpage">CourseDetailPage/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="lessonpage">LessonPage/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="profilepage">ProfilePage/</div></li>
+                                            <li class="folder"><div class="file-tree-item" data-target="auth">Auth/</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="api">api/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="auth-js">auth.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="courses-js">courses.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="users-js">users.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="index-js-api">index.js</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="hooks">hooks/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="useauth-js">useAuth.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="usecoursedata-js">useCourseData.js</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="contexts">contexts/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="authcontext-jsx">AuthContext.jsx</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="themecontext-jsx">ThemeContext.jsx</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="utils">utils/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="helpers-js">helpers.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="validators-js">validators.js</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="constants-js">constants.js</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="styles">styles/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="index-css">index.css</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="variables-css">variables.css</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="typography-css">typography.css</div></li>
+                                            <li class="file"><div class="file-tree-item" data-target="base-css">base.css</div></li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder"><div class="file-tree-item" data-target="router">router/</div>
+                                        <ul class="pl-4 hidden">
+                                            <li class="file"><div class="file-tree-item" data-target="index-jsx-router">index.jsx</div></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="folder">
+                                <div class="file-tree-item" data-target="tests">tests/</div>
+                                <ul class="pl-4 hidden">
+                                    <li class="folder"><div class="file-tree-item" data-target="tests-components">components/</div></li>
+                                    <li class="folder"><div class="file-tree-item" data-target="tests-pages">pages/</div></li>
+                                    <li class="folder"><div class="file-tree-item" data-target="tests-api">api/</div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Right Panel: Content Display -->
+        <main id="contentPanel" class="w-full md:w-2/3 lg:w-3/4 xl:w-4/5 p-6 md:p-8 lg:p-12 overflow-y-auto">
+            <!-- Content will be injected here by JavaScript -->
+        </main>
+    </div>
+
+    <script>
+        const contentData = {
+            root: {
+                title: 'E-Learning Website Project Root',
+                text: 'This is your e-learning website\'s main spot! It\'s got all the important setup files, your main code (`src`), and other project bits. Just click around on the left to see what each part does!'
+            },
+            'index-html': {
+                title: 'index.html',
+                text: 'This is your website\'s front door, the main HTML file! In a Vite project, it lives right here at the top. Vite\'s super smart and just pops your React app right into it, so your users see all the cool stuff.'
+            },
+            'vite-config': {
+                title: 'vite.config.js',
+                text: 'This little file is like Vite\'s instruction manual. It tells Vite how to build your project, add cool plugins (like the React one!), set up shortcuts, or even tweak your development server. Pretty neat, huh?'
+            },
+            'package-json': {
+                title: 'package.json',
+                text: 'Think of this as your project\'s ID card! It lists all the awesome tools and libraries (like React and Chart.js) your project needs. Plus, it\'s got handy scripts for things like starting your app or running tests. Super important!'
+            },
+            'package-lock-json': {
+                title: 'package-lock.json',
+                text: 'This file is like `package.json`\'s super careful assistant. It makes sure everyone working on the project uses the *exact* same versions of all the tools and libraries. No surprises here!'
+            },
+            'README-md': {
+                title: 'README.md',
+                text: 'This is your project\'s friendly \'hello\'! It\'s where you put all the important info about your project, like how to get it running, what it does, and anything else folks need to know. A must-have!'
+            },
+            'env': {
+                title: '.env',
+                text: 'Shhh! This is where you keep all your secret stuff, like API keys or special settings that shouldn\'t be shared publicly. It\'s safe and sound here!'
+            },
+            'gitignore': {
+                title: '.gitignore',
+                text: 'This file tells Git (your code\'s version control buddy) what files to totally ignore. Things like temporary files or build outputs that you don\'t need to track. Keeps your project clean!'
+            },
+            src: {
+                title: 'src/ - The Source Directory',
+                text: 'Welcome to the heart of your app! The `src` folder is where all your amazing React code lives. This is where you\'ll be doing most of your coding magic, keeping everything super organized and easy to find.'
+            },
+            'main-jsx': {
+                title: 'src/main.jsx',
+                text: 'This is the very first file that gets your React app rolling! It\'s like the starting gun. It brings in your main `App` component and tells React to show it on your `index.html` page. Sometimes it also sets up your website\'s navigation or global styles.'
+            },
+            'app-jsx': {
+                title: 'src/App.jsx',
+                text: 'This is your app\'s main brain! It\'s usually the top-level component that lays out your whole website and decides which page to show based on what URL your users are visiting. It\'s the big picture!'
+            },
+            assets: {
+                title: 'src/assets/',
+                text: 'Got images, videos, or custom fonts? They live here! This `assets` folder is for all those static files you bring directly into your React components. Vite\'s awesome at optimizing these and making sure they\'re ready to go.'
+            },
+            images: { title: 'src/assets/images/', text: 'Your picture gallery! All the images for your website, like your logo, course thumbnails, or any other graphics, go right here.' },
+            videos: { title: 'src/assets/videos/', text: 'If you\'ve got any cool videos for your courses or intros, this is their home!' },
+            fonts: { title: 'src/assets/fonts/', text: 'Custom fonts make your website look unique! Any special font files you\'re using will be stored in this folder.' },
+            components: {
+                title: 'src/components/',
+                text: 'These are your app\'s building blocks! Think of them as tiny, reusable LEGO pieces. Things like buttons, course cards, headers, and footers. You build them once and use them everywhere, which saves tons of time and keeps things consistent!'
+            },
+            header: {
+                title: 'src/components/Header/',
+                text: 'This folder holds everything for your website\'s header. It\'s the top part of your site, usually with your logo and navigation links. Super important for guiding users!'
+            },
+            footer: {
+                title: 'src/components/Footer/',
+                text: 'This is for your website\'s footer. It\'s the bottom part of your site, often with copyright info, quick links, or social media icons.'
+            },
+            coursecard: {
+                title: 'src/components/CourseCard/',
+                text: 'This folder contains the `CourseCard` component. It\'s a reusable piece of UI that displays a single course\'s info, like its title, description, and an image. You\'ll see these on your courses page!'
+            },
+            button: {
+                title: 'src/components/Button/',
+                text: 'This is for your reusable `Button` component. It ensures all buttons across your site look and behave consistently. Click me!'
+            },
+            pages: {
+                title: 'src/pages/',
+                text: 'These are the big sections of your website! Each folder here is usually a whole page, like your Home page, a specific Course page, or your Profile page. They often use lots of those smaller \'component\' LEGOs to build themselves up.'
+            },
+            homepage: {
+                title: 'src/pages/HomePage/',
+                text: 'This is the code for your website\'s main landing page. It\'s the first thing users see when they visit your site!'
+            },
+            coursespage: {
+                title: 'src/pages/CoursesPage/',
+                text: 'This folder holds the code for the page that lists all your amazing e-learning courses. Users will browse and find their next learning adventure here!'
+            },
+            coursedetailpage: {
+                title: 'src/pages/CourseDetailPage/',
+                text: 'When a user clicks on a specific course, this page shows all the nitty-gritty details about it, like lessons, instructors, and reviews.'
+            },
+            lessonpage: {
+                title: 'src/pages/LessonPage/',
+                text: 'This is where the actual learning happens! This page displays the content for individual lessons within a course.'
+            },
+            profilepage: {
+                title: 'src/pages/ProfilePage/',
+                text: 'This page is for your users to manage their own profiles, see their enrolled courses, and track their progress. It\'s their personal space!'
+            },
+            auth: {
+                title: 'src/pages/Auth/',
+                text: 'All your login and sign-up pages live here. This is where users create accounts or sign in to access your e-learning platform.'
+            },
+            api: {
+                title: 'src/api/',
+                text: 'This is where your app talks to the outside world, specifically your backend server! It\'s got all the code for fetching data, sending info, or updating things. Keeping it all in one spot makes managing your data flow a breeze!'
+            },
+            'auth-js': {
+                title: 'src/api/auth.js',
+                text: 'All your login and logout chats happen here! This file handles connecting your app to user authentication services.'
+            },
+            'courses-js': {
+                title: 'src/api/courses.js',
+                text: 'Need details about courses? This file is your go-to for getting all that juicy course data from your backend!'
+            },
+            'users-js': {
+                title: 'src/api/users.js',
+                text: 'This file is all about user-related stuff – fetching user profiles, updating their info, and so on.'
+            },
+            'index-js-api': {
+                title: 'src/api/index.js',
+                text: 'This is like the central switchboard for all your API calls. It might set up how your app talks to the backend, like configuring a tool such as Axios.'
+            },
+            hooks: {
+                title: 'src/hooks/',
+                text: 'These are your own special React tools! Custom hooks let you reuse smart logic across different parts of your app. For example, a `useAuth` hook could manage if a user is logged in or not. Super handy!'
+            },
+            'useauth-js': {
+                title: 'src/hooks/useAuth.js',
+                text: 'This custom hook helps manage user authentication state throughout your app. Super useful for knowing if someone\'s logged in!'
+            },
+            'usecoursedata-js': {
+                title: 'src/hooks/useCourseData.js',
+                text: 'This hook is designed to fetch and manage course-related data. It keeps your components clean by handling data loading logic behind the scenes.'
+            },
+            contexts: {
+                title: 'src/contexts/',
+                text: 'Want to share info easily across your whole app without passing it down manually everywhere? That\'s what `contexts` are for! Great for things like user login status or your website\'s theme.'
+            },
+            'authcontext-jsx': {
+                title: 'src/contexts/AuthContext.jsx',
+                text: 'This context provides authentication-related data and functions to any component that needs it, without prop drilling. Makes managing user sessions a breeze!'
+            },
+            'themecontext-jsx': {
+                title: 'src/contexts/ThemeContext.jsx',
+                text: 'This context helps manage your app\'s visual theme (like light mode/dark mode). Components can easily access and change the theme from anywhere!'
+            },
+            utils: {
+                title: 'src/utils/',
+                text: 'This is your toolbox for handy little helper functions! Things that aren\'t tied to one specific part of your app, like formatting dates, checking if form inputs are correct, or other general-purpose bits of code.'
+            },
+            'helpers-js': {
+                title: 'src/utils/helpers.js',
+                text: 'Just a bunch of useful little functions that help out here and there!'
+            },
+            'validators-js': {
+                title: 'src/utils/validators.js',
+                text: 'Functions to make sure user inputs are correct and valid. No bad data allowed!'
+            },
+            'constants-js': {
+                title: 'src/utils/constants.js',
+                text: 'For all those values that never change, like specific numbers or text strings used throughout your app. Keeps things consistent.'
+            },
+            styles: {
+                title: 'src/styles/',
+                text: 'This folder defines your app\'s overall look and feel! It\'s got your global CSS, all your custom colors, fonts, and basic styles. It\'s what makes your site look awesome!'
+            },
+            'index-css': {
+                title: 'src/styles/index.css',
+                text: 'Your main global stylesheet. This is where broad styles for your whole app might live.'
+            },
+            'variables-css': {
+                title: 'src/styles/variables.css',
+                text: 'All your custom CSS variables live here – perfect for defining your color palette, font sizes, and spacing. Makes it easy to change your theme later!'
+            },
+            'typography-css': {
+                title: 'src/styles/typography.css',
+                text: 'This file focuses just on how your text looks – fonts, sizes, line heights, and so on.'
+            },
+            'base-css': {
+                title: 'src/styles/base.css',
+                text: 'Basic styles to reset browser defaults or set up a clean foundation for your app\'s look.'
+            },
+            router: {
+                title: 'src/router/',
+                text: 'How does your app know which page to show when someone clicks a link? That\'s the router\'s job! This folder sets up all the paths for your website.'
+            },
+            'index-jsx-router': {
+                title: 'src/router/index.jsx',
+                text: 'This file defines all the different web addresses (URLs) for your site and tells your app which component to display for each one. It\'s your website\'s map!'
+            },
+            tests: {
+                title: 'src/tests/',
+                text: 'This is where you make sure everything works! It\'s got all the code for testing your components, pages, and API connections to catch any bugs before they become a problem. Super important for a stable app!'
+            },
+            'tests-components': {
+                title: 'src/tests/components/',
+                text: 'Tests specifically for your reusable UI components. Gotta make sure those building blocks are solid!'
+            },
+            'tests-pages': {
+                title: 'src/tests/pages/',
+                text: 'Tests for your main website pages. We check if all the big sections of your site are working just right.'
+            },
+            'tests-api': {
+                title: 'src/tests/api/',
+                text: 'Tests to make sure your app talks to the backend correctly. We want to be sure all that data fetching and sending is smooth!'
+            }
+        };
+
+        const contentPanel = document.getElementById('contentPanel');
+        const fileTree = document.getElementById('fileTree');
+        let activeElement = null;
+
+        function renderContent(targetId) {
+            const content = contentData[targetId] || contentData['root'];
+            contentPanel.innerHTML = `
+                <div class="animate-fade-in">
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${content.title}</h1>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed">${content.text}</p>
+                </div>
+            `;
+        }
+
+        fileTree.addEventListener('click', function(e) {
+            const item = e.target.closest('.file-tree-item');
+            if (!item) return;
+
+            const targetId = item.dataset.target;
+            renderContent(targetId);
+
+            if (activeElement) {
+                activeElement.classList.remove('active');
+            }
+            item.classList.add('active');
+            activeElement = item;
+
+            const parentLi = item.parentElement;
+            if (parentLi.classList.contains('folder')) {
+                const sublist = parentLi.querySelector('ul');
+                if (sublist) {
+                    sublist.classList.toggle('hidden');
+                    item.classList.toggle('expanded');
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialItem = fileTree.querySelector('[data-target="root"]');
+            initialItem.classList.add('active');
+            activeElement = initialItem;
+            renderContent('root');
+        });
+
+    </script>
+</body>
+</html>
