@@ -1,15 +1,19 @@
+<details> <summary><strong>📁 Project Structure</strong></summary>
+text
+Copy
+Edit
 e-learning-website/
-├── index.html              # Your main web page file (Vite likes it right here!)
-├── vite.config.js          # This is Vite's main setup file
-├── package.json            # Lists all your project's goodies (dependencies and scripts)
-├── package-lock.json       # Keeps track of exact versions of your goodies
-├── README.md               # A friendly intro to your project
-├── .env                    # Secret stuff like API keys goes here
-├── .gitignore              # Tells Git what files to ignore (like temporary ones)
+├── index.html
+├── vite.config.js
+├── package.json
+├── package-lock.json
+├── README.md
+├── .env
+├── .gitignore
 ├── src/
-│   ├── main.jsx            # The very first file your React app runs!
-│   ├── App.jsx             # Your app's main brain (where everything comes together)
-│   ├── assets/             # All your static files like images, videos, and fonts
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── assets/
 │   │   ├── images/
 │   │   │   ├── logo.png
 │   │   │   └── course-thumbnails/
@@ -17,7 +21,7 @@ e-learning-website/
 │   │   │   └── intro-video.mp4
 │   │   └── fonts/
 │   │       └── Inter-Regular.ttf
-│   ├── components/         # Little building blocks you can reuse everywhere!
+│   ├── components/
 │   │   ├── Header/
 │   │   │   ├── Header.jsx
 │   │   │   └── Header.module.css
@@ -30,8 +34,8 @@ e-learning-website/
 │   │   ├── Button/
 │   │   │   ├── Button.jsx
 │   │   │   └── Button.module.css
-│   │   └── ... (like pop-ups, forms, navigation, loading spinners)
-│   ├── pages/              # The big sections of your website (like Home, Courses, Profile)
+│   │   └── ...
+│   ├── pages/
 │   │   ├── HomePage/
 │   │   │   ├── HomePage.jsx
 │   │   │   └── HomePage.module.css
@@ -47,36 +51,37 @@ e-learning-website/
 │   │   ├── ProfilePage/
 │   │   │   ├── ProfilePage.jsx
 │   │   │   └── ProfilePage.module.css
-│   │   ├── Auth/           # All your login and sign-up pages
+│   │   ├── Auth/
 │   │   │   ├── LoginPage.jsx
 │   │   │   └── RegisterPage.jsx
-│   │   └── ... (like your dashboard, quiz pages, settings)
-│   ├── api/                # Where you talk to your backend (getting course data, user info, etc.)
-│   │   ├── auth.js         # For all your login/logout chats
-│   │   ├── courses.js      # For getting all those course details
-│   │   ├── users.js        # For user-related stuff
-│   │   └── index.js        # Your main API setup
-│   ├── hooks/              # Your own special React tools (reusable logic!)
+│   │   └── ...
+│   ├── api/
+│   │   ├── auth.js
+│   │   ├── courses.js
+│   │   ├── users.js
+│   │   └── index.js
+│   ├── hooks/
 │   │   ├── useAuth.js
 │   │   ├── useCourseData.js
 │   │   └── ...
-│   ├── contexts/           # For sharing info across your whole app easily
+│   ├── contexts/
 │   │   ├── AuthContext.jsx
 │   │   ├── ThemeContext.jsx
 │   │   └── ...
-│   ├── utils/              # Handy little helper functions (like for formatting dates or checking forms)
+│   ├── utils/
 │   │   ├── helpers.js
 │   │   ├── validators.js
 │   │   ├── constants.js
 │   │   └── ...
-│   ├── styles/             # Your app's overall look and feel (global styles, colors, fonts)
-│   │   ├── index.css       # Your main stylesheet
-│   │   ├── variables.css   # All your custom CSS variables
-│   │   ├── typography.css  # Font styles
-│   │   └── base.css        # Basic styles to get things started
-│   └── router/             # How your app knows which page to show when!
-│       └── index.jsx       # Defines all your website's paths
-├── tests/                  # Where you test all your code to make sure it works!
+│   ├── styles/
+│   │   ├── index.css
+│   │   ├── variables.css
+│   │   ├── typography.css
+│   │   └── base.css
+│   └── router/
+│       └── index.jsx
+├── tests/
 │   ├── components/
 │   ├── pages/
-│   └── api/# E-Learning
+│   └── api/
+</details>
