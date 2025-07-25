@@ -1,7 +1,8 @@
-<details> <summary><strong>📁 Project Structure</strong></summary>
-text
-Copy
-Edit
+## 📁 Project Structure:
+
+## 
+```plaintext
+
 e-learning-website/
 ├── index.html
 ├── vite.config.js
@@ -84,4 +85,4 @@ e-learning-website/
 │   ├── components/
 │   ├── pages/
 │   └── api/
-</details>
+```
