@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 
 import './App.css'
+import AuthPage from './component/common/AuthPage'
 
 function App() {
 
   return (
-    <div></div>
+    <div>
+      <AuthPage/>
+    </div>
 
   )
 }
