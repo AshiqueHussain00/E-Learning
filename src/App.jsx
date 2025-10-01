@@ -1,12 +1,14 @@
 
 import './App.css'
-import AuthPage from './component/common/AuthPage'
+import { HomePage } from './component/Pages/HomePage'
+
+
 
 function App() {
 
   return (
     <div>
-      <AuthPage/>
+      <HomePage/>
     </div>
 
   )
